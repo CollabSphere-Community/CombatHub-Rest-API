@@ -1,28 +1,23 @@
 package br.com.combathub.combat_hub.domain.user;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
-@AllArgsConstructor
-@NoArgsConstructor
 public class UserEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Getter
     private String login;
 
     private String password;
@@ -33,10 +28,33 @@ public class UserEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
+    private boolean confirmed;
+
     public UserEntity(String login, String password, UserRole role) {
         this.login = login;
         this.password = password;
         this.role = role;
+        this.registeredAt = LocalDateTime.now(ZoneId.of("America/Sao_Paulo"));
+    }
+
+    public UserEntity() {}
+
+    public UserEntity(long id, String login, String password,
+                      LocalDateTime registeredAt, UserRole role, boolean confirmed) {
+        this.id = id;
+        this.login = login;
+        this.password = password;
+        this.registeredAt = registeredAt;
+        this.role = role;
+        this.confirmed = confirmed;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public boolean isConfirmed() {
+        return confirmed;
     }
 
     @Override
