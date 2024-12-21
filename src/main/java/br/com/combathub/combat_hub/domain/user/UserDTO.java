@@ -1,5 +1,6 @@
 package br.com.combathub.combat_hub.domain.user;
 
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -14,6 +15,7 @@ public record UserDTO(
         @Length(min = 8)
         String password,
 
+        @NotNull
         @Enumerated
         UserRole role
 ) {
