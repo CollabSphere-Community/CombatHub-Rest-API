@@ -1,5 +1,6 @@
 package br.com.combathub.combat_hub.infra.exception;
 
+import com.auth0.jwt.exceptions.SignatureVerificationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -39,6 +40,16 @@ public class Exceptions {
     @ExceptionHandler(EmailNotRegisteredException.class)
     public ResponseEntity emailNotRegistered() {
         return ResponseEntity.notFound().build();
+    }
+
+    @ExceptionHandler(SignatureVerificationException.class)
+    public ResponseEntity jwtVerification() {
+        return ResponseEntity.badRequest().body("invalid_jtw_token");
+    }
+
+    @ExceptionHandler(UserAlredyConfirmedException.class)
+    public ResponseEntity userAlreadyConfirmed() {
+        return ResponseEntity.badRequest().body("user_already_confirmed");
     }
 
 }
