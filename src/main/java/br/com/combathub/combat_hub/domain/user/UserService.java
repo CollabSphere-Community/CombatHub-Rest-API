@@ -3,6 +3,7 @@ package br.com.combathub.combat_hub.domain.user;
 import br.com.combathub.combat_hub.infra.exception.EmailAlreadyRegisteredException;
 import br.com.combathub.combat_hub.infra.exception.EmailNotConfirmedException;
 import br.com.combathub.combat_hub.infra.exception.EmailNotRegisteredException;
+import br.com.combathub.combat_hub.infra.exception.UserAlredyConfirmedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -38,6 +39,15 @@ public class UserService implements UserDetailsService {
             throw new EmailNotRegisteredException();
         } else if(!user.isConfirmed()) {
             throw new EmailNotConfirmedException();
+        }
+
+        return true;
+    }
+
+    public boolean isUserNotConfirmed(String login) throws UserAlredyConfirmedException {
+        var user = (UserEntity) loadUserByUsername(login);
+        if(user.isConfirmed()) {
+            throw new UserAlredyConfirmedException();
         }
 
         return true;
