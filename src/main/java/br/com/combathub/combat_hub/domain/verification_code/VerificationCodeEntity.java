@@ -38,6 +38,7 @@ public class VerificationCodeEntity {
         this.user = user;
         this.expiresAt =
                 LocalDateTime.now(ZoneId.of("America/Sao_Paulo")).plusHours(2);
+        this.valid = true;
     }
 
     public UserEntity getUser() {
