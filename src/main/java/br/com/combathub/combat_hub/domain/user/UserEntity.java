@@ -49,6 +49,10 @@ public class UserEntity implements UserDetails {
         this.confirmed = confirmed;
     }
 
+    public long getId() {
+        return id;
+    }
+
     public String getLogin() {
         return login;
     }
