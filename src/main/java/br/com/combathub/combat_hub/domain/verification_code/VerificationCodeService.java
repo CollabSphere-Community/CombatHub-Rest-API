@@ -19,4 +19,9 @@ public class VerificationCodeService {
         emailService.sendVerificationCode(entity);
     }
 
+    public void setExistingCodesAsInvalid(UserEntity user) {
+        var codes = repository.findAllByUserAndValidTrue(user);
+        codes.forEach(code -> code.setValid(false));
+    }
+
 }
