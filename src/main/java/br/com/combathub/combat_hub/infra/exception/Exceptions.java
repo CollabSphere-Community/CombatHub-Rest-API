@@ -1,6 +1,9 @@
 package br.com.combathub.combat_hub.infra.exception;
 
+import br.com.combathub.combat_hub.infra.security.VerificationCodeExpiredException;
+import br.com.combathub.combat_hub.infra.security.VerificationCodeInvalidException;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -50,6 +53,21 @@ public class Exceptions {
     @ExceptionHandler(UserAlredyConfirmedException.class)
     public ResponseEntity userAlreadyConfirmed() {
         return ResponseEntity.badRequest().body("user_already_confirmed");
+    }
+
+    @ExceptionHandler(VerificationCodeExpiredException.class)
+    public ResponseEntity codeExpired() {
+        return ResponseEntity.badRequest().body("verification_code_is_expired");
+    }
+
+    @ExceptionHandler(VerificationCodeInvalidException.class)
+    public ResponseEntity codeInvalid() {
+        return ResponseEntity.badRequest().body("verification_code_is_not_valid");
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity entityNotFound() {
+        return ResponseEntity.notFound().build();
     }
 
 }
