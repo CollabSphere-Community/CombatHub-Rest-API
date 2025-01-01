@@ -48,6 +48,10 @@ public class VerificationCodeEntity {
         return valid;
     }
 
+    public LocalDateTime getExpiresAt() {
+        return expiresAt;
+    }
+
     public void setValid(boolean valid){
         this.valid = valid;
     }
