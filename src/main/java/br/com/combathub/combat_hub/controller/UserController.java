@@ -5,9 +5,12 @@ import br.com.combathub.combat_hub.domain.user.UserDTO;
 import br.com.combathub.combat_hub.domain.user.UserEntity;
 import br.com.combathub.combat_hub.domain.user.UserService;
 import br.com.combathub.combat_hub.domain.verification_code.VerificationCodeService;
+import br.com.combathub.combat_hub.infra.security.JWTTokenDTO;
+import br.com.combathub.combat_hub.infra.security.TokenService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,14 +31,20 @@ public class UserController {
     @Autowired
     private PasswordEncoder encoder;
 
+    //TODO Encaluse the usage of others services to the UserService
     @Autowired
     private VerificationCodeService verificationCodeService;
 
+    @Autowired
+    private TokenService tokenService;
+
     @PostMapping("/login")
     @PreAuthorize("@userService.isEmailConfirmed(#dto.login())")
-    public void login(@Valid @RequestBody AuthenticationDTO dto) {
+    public ResponseEntity<JWTTokenDTO> login(@Valid @RequestBody AuthenticationDTO dto) {
         var token = new UsernamePasswordAuthenticationToken(dto.login(), dto.password());
         this.authenticationManager.authenticate(token);
+        var jwtToken = tokenService.generateToken(token.getName());
+        return ResponseEntity.ok(new JWTTokenDTO(jwtToken));
     }
 
     @PostMapping("/register")
