@@ -1,6 +1,10 @@
 package br.com.combathub.combat_hub.domain.user;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +16,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
+@Getter
+@NoArgsConstructor
 public class UserEntity implements UserDetails {
 
     @Id
@@ -28,6 +34,7 @@ public class UserEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
+    @Setter
     private boolean confirmed;
 
     public UserEntity(String login, String password, UserRole role) {
@@ -35,34 +42,6 @@ public class UserEntity implements UserDetails {
         this.password = password;
         this.role = role;
         this.registeredAt = LocalDateTime.now(ZoneId.of("America/Sao_Paulo"));
-    }
-
-    public UserEntity() {}
-
-    public UserEntity(long id, String login, String password,
-                      LocalDateTime registeredAt, UserRole role, boolean confirmed) {
-        this.id = id;
-        this.login = login;
-        this.password = password;
-        this.registeredAt = registeredAt;
-        this.role = role;
-        this.confirmed = confirmed;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public boolean isConfirmed() {
-        return confirmed;
-    }
-
-    public void setConfirmed(boolean confirmed) {
-        this.confirmed = confirmed;
     }
 
     @Override

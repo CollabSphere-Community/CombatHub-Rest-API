@@ -2,6 +2,10 @@ package br.com.combathub.combat_hub.domain.verification_code;
 
 import br.com.combathub.combat_hub.domain.user.UserEntity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -9,6 +13,8 @@ import java.util.UUID;
 
 @Entity
 @Table(name="user_verification_code")
+@Getter
+@NoArgsConstructor
 public class VerificationCodeEntity {
 
     @Id
@@ -24,6 +30,7 @@ public class VerificationCodeEntity {
 
     private LocalDateTime expiresAt;
 
+    @Setter
     private boolean valid;
 
     public VerificationCodeEntity(UserEntity user) {
@@ -34,25 +41,4 @@ public class VerificationCodeEntity {
         this.valid = true;
     }
 
-    public VerificationCodeEntity() {}
-
-    public UserEntity getUser() {
-        return user;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public boolean isValid() {
-        return valid;
-    }
-
-    public LocalDateTime getExpiresAt() {
-        return expiresAt;
-    }
-
-    public void setValid(boolean valid){
-        this.valid = valid;
-    }
 }
