@@ -2,10 +2,7 @@ package br.com.combathub.combat_hub.domain.verification_code;
 
 import br.com.combathub.combat_hub.domain.user.UserEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -15,6 +12,7 @@ import java.util.UUID;
 @Table(name="user_verification_code")
 @Getter
 @NoArgsConstructor
+@EqualsAndHashCode(of = "id")
 public class VerificationCodeEntity {
 
     @Id
