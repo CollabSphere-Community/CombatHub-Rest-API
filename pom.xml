@@ -8,7 +8,7 @@
 		<version>3.4.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>br.com.combathub</groupId>
+	<groupId>com.combathub</groupId>
 	<artifactId>combat_hub</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>combat_hub</name>
