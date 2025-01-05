@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,7 +32,7 @@ public class UserController {
     @Autowired
     private PasswordEncoder encoder;
 
-    //TODO Encaluse the usage of others services to the UserService
+    //TODO Encapsulate the usage of others services to the UserService
     @Autowired
     private VerificationCodeService verificationCodeService;
 
@@ -40,7 +41,7 @@ public class UserController {
 
     @PostMapping("/login")
     @PreAuthorize("@userService.isEmailConfirmed(#dto.login())")
-    public ResponseEntity<JWTTokenDTO> login(@Valid @RequestBody AuthenticationDTO dto) {
+    public ResponseEntity<JWTTokenDTO> login(@Valid @RequestBody AuthenticationDTO dto) throws AuthenticationException {
         var token = new UsernamePasswordAuthenticationToken(dto.login(), dto.password());
         this.authenticationManager.authenticate(token);
         var jwtToken = tokenService.generateToken(token.getName());
