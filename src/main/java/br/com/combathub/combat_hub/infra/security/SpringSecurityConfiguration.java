@@ -33,6 +33,8 @@ public class SpringSecurityConfiguration {
                     rq.requestMatchers(HttpMethod.POST, "/register").permitAll();
                     rq.requestMatchers(HttpMethod.POST, "/verification-code/new-code").permitAll();
                     rq.requestMatchers(HttpMethod.POST, "/verification-code").permitAll();
+                    rq.requestMatchers(HttpMethod.POST, "/api/**").permitAll();
+                    rq.requestMatchers(HttpMethod.GET, "/api/**").permitAll();
                     rq.anyRequest().authenticated();
                 })
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)

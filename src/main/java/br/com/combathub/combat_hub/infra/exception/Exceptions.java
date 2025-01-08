@@ -4,6 +4,9 @@ import br.com.combathub.combat_hub.infra.security.VerificationCodeExpiredExcepti
 import br.com.combathub.combat_hub.infra.security.VerificationCodeInvalidException;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
 import jakarta.persistence.EntityNotFoundException;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -68,6 +71,13 @@ public class Exceptions {
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity entityNotFound() {
         return ResponseEntity.notFound().build();
+    }
+    
+    @ExceptionHandler(EventNotFoundExpection.class)
+    public ResponseEntity<Object> eventNotFound(EventNotFoundExpection eventNotFoundExpection) {
+    	EventExpection eventException = new EventExpection(eventNotFoundExpection.getMessage(), 
+    			eventNotFoundExpection.getCause(),HttpStatus.NOT_FOUND);
+    	return new ResponseEntity<Object>(eventException,HttpStatus.NOT_FOUND);
     }
 
 }
