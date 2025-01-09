@@ -3,8 +3,12 @@ package br.com.combathub.combat_hub.domain.event;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,12 +16,29 @@ import lombok.Setter;
 @Setter
 public class EventDTO {
     private Long id;
+    
+    @NotNull(message = "Name is required")
+    @Size(min = 2, max = 100, message = "Name must be between 2 and 100 characters")
     private String name;
+    
     private String description;
+    
+    @NotNull(message = "Start date is required")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime startDate;
+    
+    @NotNull(message = "End date is required")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime endDate;
+    
+    @NotNull(message = "Location is required")
+    @Size(min = 2, max = 200, message = "Location must be between 2 and 200 characters")
     private String location;
+    
+    @PositiveOrZero(message = "Max participants must be zero or a positive number")
     private Integer maxParticipants;
+    
+    @NotNull(message = "Organizer ID is required")
     private Long organizerId;
     
     public EventDTO() {

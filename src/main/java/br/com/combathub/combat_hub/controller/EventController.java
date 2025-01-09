@@ -14,7 +14,9 @@ import br.com.combathub.combat_hub.domain.event.EventDTO;
 import br.com.combathub.combat_hub.domain.event.EventEntity;
 import br.com.combathub.combat_hub.domain.event.EventService;
 import br.com.combathub.combat_hub.domain.user.UserEntity;
+import br.com.combathub.combat_hub.infra.exception.DateNotValidException;
 import br.com.combathub.combat_hub.infra.response.ResponseHandler;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/event")
@@ -34,7 +36,8 @@ public class EventController {
 	}
 	
 	@PostMapping("/create")
-	public ResponseEntity<Object> createEvent(@RequestBody EventDTO event){
+	public ResponseEntity<Object> createEvent(@Valid @RequestBody EventDTO event){
+		eventService.isDatesValid(event.getStartDate(), event.getEndDate());
 		UserEntity organizer = eventService.getOrganizerbyid(event.getOrganizerId());
 		
 		EventEntity newEvent = new EventEntity(event.getName(),event.getDescription(),event.getStartDate(),
