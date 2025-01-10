@@ -79,26 +79,29 @@ public class Exceptions {
     @ExceptionHandler(EventNotFoundExpection.class)
     public ResponseEntity<Object> eventNotFound(EventNotFoundExpection ex) {
     	EventExpection eventException = new EventExpection(ex.getMessage(), 
-    			ex.getCause(),HttpStatus.NOT_FOUND);
+    			ex.getCause(),ApplicationErrorCode.ENITY_NOT_FOUND);
     	return new ResponseEntity<Object>(eventException,HttpStatus.NOT_FOUND);
     }
     
     @ExceptionHandler(DateNotValidException.class)
     public ResponseEntity<Object> dateInvalid(DateNotValidException ex) {
     	EventExpection eventException = new EventExpection(ex.getMessage(), 
-    			ex.getCause(),HttpStatus.BAD_REQUEST);
-//    	return new ResponseEntity<Object>(eventException,HttpStatus.BAD_REQUEST);
-    	return ResponseHandler.errorResponseBuilder("Date Invalid. ", HttpStatus.BAD_REQUEST, eventException);
+    			ex.getCause(),ApplicationErrorCode.DATE_NOT_VALUE);
+    	return ResponseHandler.errorResponseBuilder(HttpStatus.BAD_REQUEST, eventException);
     }
     
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Object> handleInvalidFormat(HttpMessageNotReadableException ex) {
         Throwable cause = ex.getCause();
         if (cause instanceof com.fasterxml.jackson.databind.exc.InvalidFormatException) {
-            return ResponseHandler.errorResponseBuilder("Invalid date-time format. Please use 'yyyy-MM-ddTHH:mm:ss'.", HttpStatus.BAD_REQUEST,null);
+        	EventExpection eventException = new EventExpection("Invalid date-time format. Please use 'yyyy-MM-ddTHH:mm:ss'.", 
+        			ex.getCause(),ApplicationErrorCode.INVALID_DATE_FORMAT);
+            return ResponseHandler.errorResponseBuilder(HttpStatus.BAD_REQUEST,eventException);
         }
-        return ResponseHandler.errorResponseBuilder("Invalid request body.", HttpStatus.BAD_REQUEST,null);
+        
+        EventExpection eventException = new EventExpection("Invalid Request Body", 
+    			ex.getCause(),ApplicationErrorCode.INVALID_REQUEST_BODY);
+        return ResponseHandler.errorResponseBuilder(HttpStatus.BAD_REQUEST,eventException);
     }
     
-
 }

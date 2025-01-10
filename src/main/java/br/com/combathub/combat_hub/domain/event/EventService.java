@@ -13,34 +13,44 @@ import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class EventService {
-	
-	@Autowired
-	EventRepository eventRepository;
-	
-	@Autowired 
-	UserRepository userRepository;
-	
-	public EventEntity getUserById(Long id) {
-		return eventRepository.findById(id).orElseThrow(()-> new EventNotFoundExpection("Event Not Found"));
-	}
-	
-	public EventEntity createEvent(EventEntity event) {
-		try {			
-			return eventRepository.save(event);
-		} catch (Exception e) {
-			throw new RuntimeException(e.getMessage());
-		} 
-	}
-	
-	public UserEntity getOrganizerbyid(Long id) {
-    	return userRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("Organizer Id not found."));
+    
+    @Autowired
+    private EventRepository eventRepository;
+    
+    @Autowired 
+    private UserRepository userRepository;
+    
+    public EventEntity getEventById(Long id) {
+        return eventRepository.findById(id)
+                .orElseThrow(() -> new EventNotFoundExpection("Event Not Found"));
     }
-	
-	public boolean isDatesValid(LocalDateTime startDate, LocalDateTime endDate) {
-		if(!startDate.isAfter(LocalDateTime.now())) throw new DateNotValidException("start date and time can't be less then current date and time.");
-		if(!startDate.isBefore(endDate)) throw new DateNotValidException("end date and time can't be less then start date and time.");;
-		return true;
-	}
-	
-
+    
+    public EventEntity createEvent(EventDTO event) {
+        validateDates(event.getStartDate(), event.getEndDate());
+        UserEntity organizer = getOrganizerById(event.getOrganizerId());
+        EventEntity newEvent = new EventEntity(
+                event.getName(),
+                event.getDescription(),
+                event.getStartDate(), 
+                event.getEndDate(),
+                event.getLocation(),
+                event.getMaxParticipants(),
+                organizer
+        );
+        return eventRepository.save(newEvent);
+    }
+    
+    public UserEntity getOrganizerById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Organizer Id not found."));
+    }
+    
+    public void validateDates(LocalDateTime startDate, LocalDateTime endDate) {
+        if (!startDate.isAfter(LocalDateTime.now())) {
+            throw new DateNotValidException("Start date and time cannot be less than the current date and time.");
+        }
+        if (!startDate.isBefore(endDate)) {
+            throw new DateNotValidException("End date and time cannot be less than the start date and time.");
+        }
+    }
 }

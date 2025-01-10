@@ -1,4 +1,4 @@
-package br.com.combathub.combat_hub.controller;
+ package br.com.combathub.combat_hub.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,12 +37,7 @@ public class EventController {
 	
 	@PostMapping("/create")
 	public ResponseEntity<Object> createEvent(@Valid @RequestBody EventDTO event){
-		eventService.isDatesValid(event.getStartDate(), event.getEndDate());
-		UserEntity organizer = eventService.getOrganizerbyid(event.getOrganizerId());
 		
-		EventEntity newEvent = new EventEntity(event.getName(),event.getDescription(),event.getStartDate(),
-				event.getEndDate(),event.getLocation(),event.getMaxParticipants(),organizer);
-		
-		return ResponseHandler.eventResponseBuilder("Event Created Successfully.", HttpStatus.CREATED, eventService.createEvent(newEvent));
+		return ResponseHandler.eventResponseBuilder("Event Created Successfully.", HttpStatus.CREATED, eventService.createEvent(event));
 	}
 }

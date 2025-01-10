@@ -29,12 +29,11 @@ public class ResponseHandler {
 		return new ResponseEntity<>(response, httpStatus);
 	}
 	
-	public static ResponseEntity<Object> errorResponseBuilder(String message, HttpStatus httpStatus, Object responseObject){
+	public static ResponseEntity<Object> errorResponseBuilder(HttpStatus httpStatus, Object responseObject){
 		HashMap<String, Object> response = new HashMap<String, Object>();
 		
-		response.put("message", message);
 		response.put("httpStatus", httpStatus);
-		response.put("Error", responseObject);
+		response.put("error", responseObject);
 		
 		return new ResponseEntity<>(response, httpStatus);
 	}

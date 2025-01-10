@@ -1,16 +1,14 @@
 package br.com.combathub.combat_hub.infra.exception;
-import org.springframework.http.HttpStatus;
-
 
 public class EventExpection {
 	private final String message;
 	private final Throwable throwable;
-	private final HttpStatus HttpStatus;
+	private final ApplicationErrorCode status;
 
-	public EventExpection(String message, Throwable throwable,  HttpStatus httpStatus) {
+	public EventExpection(String message, Throwable throwable,  ApplicationErrorCode status) {
 		this.message = message;
 		this.throwable = throwable;
-		HttpStatus = httpStatus;
+		this.status = status;
 	}
 
 	public String getMessage() {
@@ -21,7 +19,7 @@ public class EventExpection {
 		return throwable;
 	}
 
-	public HttpStatus getHttpStatus() {
-		return HttpStatus;
+	public ApplicationErrorCode getStatus() {
+		return status;
 	}
 }
