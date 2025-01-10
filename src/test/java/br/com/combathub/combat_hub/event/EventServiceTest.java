@@ -50,8 +50,7 @@ public class EventServiceTest {
         
         userEntity = new UserEntity();
 
-        // Mock the behavior of userRepository to return userEntity when findById is called
-        when(userRepository.findById(1L)).thenReturn(Optional.of(userEntity));
+        lenient().when(userRepository.findById(1L)).thenReturn(Optional.of(userEntity));
 
         eventEntity = new EventEntity("Test Event", "Test Description", LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(2), "Test Location", 100, userEntity);
     }
