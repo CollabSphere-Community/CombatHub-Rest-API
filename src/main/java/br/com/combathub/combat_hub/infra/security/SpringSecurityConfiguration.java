@@ -16,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import br.com.combathub.combat_hub.domain.user.UserRole;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -33,8 +35,8 @@ public class SpringSecurityConfiguration {
                     rq.requestMatchers(HttpMethod.POST, "/register").permitAll();
                     rq.requestMatchers(HttpMethod.POST, "/verification-code/new-code").permitAll();
                     rq.requestMatchers(HttpMethod.POST, "/verification-code").permitAll();
-                    rq.requestMatchers(HttpMethod.POST, "/api/**").permitAll();
-                    rq.requestMatchers(HttpMethod.GET, "/api/**").permitAll();
+                    rq.requestMatchers(HttpMethod.POST, "/api/**").hasRole(UserRole.ORGANIZER.toString());
+                    rq.requestMatchers(HttpMethod.GET, "/api/**").hasRole(UserRole.ORGANIZER.toString());
                     rq.anyRequest().authenticated();
                 })
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)

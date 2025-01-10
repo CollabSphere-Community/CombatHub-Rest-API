@@ -32,3 +32,6 @@ build/
 ### VS Code ###
 .vscode/
 /.apt_generated_tests/
+
+# Ignore application-dev.properties
+/CombatHub-Rest-API/src/main/resources/application-dev.properties
