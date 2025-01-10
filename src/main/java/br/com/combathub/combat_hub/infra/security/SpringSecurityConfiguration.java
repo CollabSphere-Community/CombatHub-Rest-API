@@ -31,6 +31,7 @@ public class SpringSecurityConfiguration {
         return httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(rq -> {
+                	rq.requestMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll();
                     rq.requestMatchers(HttpMethod.POST, "/login").permitAll();
                     rq.requestMatchers(HttpMethod.POST, "/register").permitAll();
                     rq.requestMatchers(HttpMethod.POST, "/verification-code/new-code").permitAll();
