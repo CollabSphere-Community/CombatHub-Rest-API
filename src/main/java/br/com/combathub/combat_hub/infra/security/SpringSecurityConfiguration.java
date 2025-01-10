@@ -35,8 +35,8 @@ public class SpringSecurityConfiguration {
                     rq.requestMatchers(HttpMethod.POST, "/register").permitAll();
                     rq.requestMatchers(HttpMethod.POST, "/verification-code/new-code").permitAll();
                     rq.requestMatchers(HttpMethod.POST, "/verification-code").permitAll();
-                    rq.requestMatchers(HttpMethod.POST, "/api/**").hasRole(UserRole.ORGANIZER.toString());
-                    rq.requestMatchers(HttpMethod.GET, "/api/**").hasRole(UserRole.ORGANIZER.toString());
+                    rq.requestMatchers(HttpMethod.POST, "/api/**").authenticated();//hasRole(UserRole.ORGANIZER.toString());
+                    rq.requestMatchers(HttpMethod.GET, "/api/event/create").hasRole(UserRole.ORGANIZER.toString());//hasRole(UserRole.ORGANIZER.toString());
                     rq.anyRequest().authenticated();
                 })
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)

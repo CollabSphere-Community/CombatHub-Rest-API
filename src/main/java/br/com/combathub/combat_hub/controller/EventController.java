@@ -32,7 +32,7 @@ public class EventController {
 	
 	@GetMapping("/{eventId}")
 	public ResponseEntity<Object> getEventById(@PathVariable("eventId") Long eventId){
-		return ResponseHandler.eventResponseBuilder("Successfully Retrived the Event.", HttpStatus.OK, eventService.getUserById(eventId));
+		return ResponseHandler.eventResponseBuilder("Successfully Retrived the Event.", HttpStatus.OK, eventService.getEventById(eventId));
 	}
 	
 	@PostMapping("/create")

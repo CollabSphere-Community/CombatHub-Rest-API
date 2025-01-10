@@ -34,4 +34,4 @@ build/
 /.apt_generated_tests/
 
 # Ignore application-dev.properties
-/CombatHub-Rest-API/src/main/resources/application-dev.properties
+./src/main/resources/application-dev.properties
