@@ -16,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import br.com.combathub.combat_hub.domain.user.UserRole;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -29,10 +31,13 @@ public class SpringSecurityConfiguration {
         return httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(rq -> {
+                	rq.requestMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll();
                     rq.requestMatchers(HttpMethod.POST, "/login").permitAll();
                     rq.requestMatchers(HttpMethod.POST, "/register").permitAll();
                     rq.requestMatchers(HttpMethod.POST, "/verification-code/new-code").permitAll();
                     rq.requestMatchers(HttpMethod.POST, "/verification-code").permitAll();
+                    rq.requestMatchers(HttpMethod.POST, "/api/**").authenticated();//hasRole(UserRole.ORGANIZER.toString());
+                    rq.requestMatchers(HttpMethod.GET, "/api/event/create").hasRole(UserRole.ORGANIZER.toString());//hasRole(UserRole.ORGANIZER.toString());
                     rq.anyRequest().authenticated();
                 })
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
