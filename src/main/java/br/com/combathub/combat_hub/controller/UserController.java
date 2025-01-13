@@ -1,9 +1,7 @@
 package br.com.combathub.combat_hub.controller;
 
-import br.com.combathub.combat_hub.domain.user.AuthenticationDTO;
-import br.com.combathub.combat_hub.domain.user.UserDTO;
-import br.com.combathub.combat_hub.domain.user.UserEntity;
-import br.com.combathub.combat_hub.domain.user.UserService;
+import br.com.combathub.combat_hub.domain.profile.*;
+import br.com.combathub.combat_hub.domain.user.*;
 import br.com.combathub.combat_hub.domain.verification_code.VerificationCodeService;
 import br.com.combathub.combat_hub.infra.security.JWTTokenDTO;
 import br.com.combathub.combat_hub.infra.security.TokenService;
@@ -39,6 +37,9 @@ public class UserController {
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+    private ProfileService profileService;
+
     @PostMapping("/login")
     @PreAuthorize("@userService.isEmailConfirmed(#dto.login())")
     public ResponseEntity<JWTTokenDTO> login(@Valid @RequestBody AuthenticationDTO dto) throws AuthenticationException {
@@ -50,12 +51,13 @@ public class UserController {
 
     @PostMapping("/register")
     @Transactional
-    @PreAuthorize("@userService.isEmailRegistered(#dto.login())")
-    public void register(@Valid @RequestBody UserDTO dto) {
-        var encodedPassword = encoder.encode(dto.password());
+    @PreAuthorize("@userService.isEmailRegistered(#userRegistrationDTO.login())")
+    public void register(@Valid @RequestBody UserRegistrationDTO userRegistrationDTO) {
+        var encodedPassword = encoder.encode(userRegistrationDTO.password());
         var user = this.userService.registerUser(
-                new UserEntity(dto.login(), encodedPassword, dto.role())
+                new UserEntity(userRegistrationDTO.login(), encodedPassword, userRegistrationDTO.role())
         );
+        this.profileService.createProfile(userRegistrationDTO, user);
         this.verificationCodeService.registerCode(user);
     }
 
