@@ -37,6 +37,9 @@ public class UserController {
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+    private ProfileService profileService;
+
     @PostMapping("/login")
     @PreAuthorize("@userService.isEmailConfirmed(#dto.login())")
     public ResponseEntity<JWTTokenDTO> login(@Valid @RequestBody AuthenticationDTO dto) throws AuthenticationException {
@@ -54,6 +57,7 @@ public class UserController {
         var user = this.userService.registerUser(
                 new UserEntity(userRegistrationDTO.login(), encodedPassword, userRegistrationDTO.role())
         );
+        this.profileService.createProfile(userRegistrationDTO, user);
         this.verificationCodeService.registerCode(user);
     }
 
